@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=Barriecito&display=swap" rel="stylesheet">
+        <title>QUIZ!!</title>
+    </head>
+    <body>
+        <main id="main">
+            <h1>{{mainText}}</h1>
+            <transition name="fade">
+                <ul id="player-pieces" v-if="showPickPieces">
+                    <li
+                        v-for="(piece, index) in playerPieces"
+                        @click="selectPiece(index)"
+                        :class="piece.selected"
+                        :id="(piece.piece == selectedPiece) ? 'selected' : ''"
+                    >
+                        {{piece.piece}}
+                    </li>
+                </ul>
+            </transition>
+            <button
+                v-if="selectedPiece ==='🐌' && showPickPieces"
+                id="start"
+                @click="startGame"
+            >
+                START
+            </button>
+        </main>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="/script.js" charset="utf-8"></script>
+    </body>
+</html>

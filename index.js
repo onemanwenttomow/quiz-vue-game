@@ -2,94 +2,10 @@ const express       = require('express');
 const app           = express();
 const http          = require('http').createServer(app);
 const io            = require('socket.io')(http);
+let playerPieces    = require('./pieces');
 
 app.use(express.static('public'));
 
-const playerPieces = [
-    {
-        piece: "🐵",
-        selected: ""
-    }, {
-        piece: "🐶",
-        selected: ""
-    },
-    {
-        piece: "🐱",
-        selected: ""
-    },
-    {
-        piece: "🦝",
-        selected: ""
-    },
-    {
-        piece: "🐸",
-        selected: ""
-    },
-    {
-        piece: "🐼",
-        selected: ""
-    },
-    {
-        piece: "🐨",
-        selected: ""
-    },
-    {
-        piece: "🐻",
-        selected: ""
-    },
-    {
-        piece: "🐹",
-        selected: ""
-    },
-    {
-        piece: "🐭",
-        selected: ""
-    },
-    {
-        piece: "🐷",
-        selected: ""
-    },
-    {
-        piece: "🐗",
-        selected: ""
-    },
-    {
-        piece: "🐔",
-        selected: ""
-    },
-    {
-        piece: "🦄",
-        selected: ""
-    },
-    {
-        piece: "🐺",
-        selected: ""
-    },
-    {
-        piece: "🦁",
-        selected: ""
-    },
-    {
-        piece: "🐯",
-        selected: ""
-    },
-    {
-        piece: "🐴",
-        selected: ""
-    },
-    {
-        piece: "🐮",
-        selected: ""
-    },
-    {
-        piece: "🦊",
-        selected: ""
-    },
-    {
-        piece: "🐌",
-        selected: ""
-    }
-];
 
 let gameStarted = false;
 
@@ -107,15 +23,23 @@ io.on('connection', function(socket) {
     });
 
     socket.on('update piece', function(idx) {
-        console.log('piece!!!: ' + idx);
         playerPieces[idx].selected = "selected";
         io.emit('pieces', playerPieces);
     });
 
     socket.on('gameStarted', function() {
-        console.log("GAME STARTED!");
-        io.emit('gameStarted', true);
+        socket.broadcast.emit('gameStarted', true);
         gameStarted = true;
+    });
+
+    socket.on('restartGame', function() {
+        playerPieces.map(piece => {
+            return piece.selected = "";
+        });
+        gameStarted = false;
+        io.emit('pieces', playerPieces);
+        io.emit('gameStarted', false);
+        io.emit('restart', this.setTimeoutTracker);
     });
 
 });

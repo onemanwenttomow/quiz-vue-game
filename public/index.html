@@ -4,23 +4,28 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="/styles.css">
         <link href="https://fonts.googleapis.com/css?family=Barriecito&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
         <title>QUIZ!!</title>
     </head>
     <body>
         <main id="main">
-            <h1>{{mainText}}</h1>
+            <img id="spiced" src="/spiced.png" alt="spiced">
+            <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
+            <h1 v-if="showPickPieces || timeLeft === 0">{{mainText}}</h1>
+            <h1 v-else="!showPickPieces">{{mainText}}{{timeLeft}}secs</h1>
             <transition name="fade">
                 <ul id="player-pieces" v-if="showPickPieces">
                     <li
                         v-for="(piece, index) in playerPieces"
                         @click="selectPiece(index)"
                         :class="piece.selected"
-                        :id="(piece.piece == selectedPiece) ? 'selected' : ''"
+                        :id="piece.piece == selectedPiece ? 'selected' : ''"
                     >
                         {{piece.piece}}
                     </li>
                 </ul>
             </transition>
+
             <button
                 v-if="selectedPiece ==='🐌' && showPickPieces"
                 id="start"
@@ -28,6 +33,23 @@
             >
                 START
             </button>
+
+            <div class="quiz" v-if="!showPickPieces">
+                <div class="question" @click="checkAnswer">{{questions[questionCount].question}}</div>
+                <code>{{questions[questionCount].code}}</code>
+                <div
+                    :id="correctAnswer === index ? 'correct-answer' : ''"
+                    class="answer"
+                    :class="userSelectedAnswer === index ? 'user-selected' : ''"
+                    v-for="(answer, index) in questions[questionCount].answers"
+                    @click="selectedAnswer(index)"
+                >
+                    {{answer}}
+                </div>
+            </div>
+
+
+
         </main>
 
         <script src="/socket.io/socket.io.js"></script>

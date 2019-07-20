@@ -74,10 +74,7 @@ new Vue({
 
         },
         mouseMoving: function(e) {
-            // console.log(e);
-            console.log(this.userSelectedAnswer);
-
-            if (this.userSelectedAnswer === 0 || this.userSelectedAnswer) {
+            if (this.userSelectedAnswer === 0 || this.userSelectedAnswer || this.timeLeft <= 0) {
                 return;
             }
             this.selectPieceCoordinates.x = e.pageX - 20;
@@ -105,7 +102,6 @@ new Vue({
             });
             socket.on('timeLeft', (timeLeft) => {
                 this.timeLeft = timeLeft;
-                console.log(this.timeLeft);
                 if (this.timeLeft === 0) {
                     this.correctAnswer = this.questions[this.questionCount].answer;
                     this.mainText = "Time's Up";

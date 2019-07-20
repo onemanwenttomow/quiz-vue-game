@@ -2,7 +2,14 @@ const express       = require('express');
 const app           = express();
 const http          = require('http').createServer(app);
 const io            = require('socket.io')(http);
-let playerPieces    = require('./pieces');
+let playerPieces    = require('./pieces').map(piece => {
+    return piece = {
+        piece: piece,
+        selected: "",
+        x: 0,
+        y: 0
+    };
+});
 
 app.use(express.static('public'));
 

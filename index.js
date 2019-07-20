@@ -41,6 +41,20 @@ io.on('connection', function(socket) {
         io.emit('gameStarted', false);
         io.emit('restart', this.setTimeoutTracker);
     });
+    let time;
+    socket.on('start timer', function() {
+        time = 30;
+        countDownTimer();
+        function countDownTimer() {
+            console.log("time left: ", time);
+            time--;
+            io.emit('timeLeft', time);
+            if (time <= -1 ) {
+                return;
+            }
+            setTimeout(countDownTimer, 1000);
+        }
+    });
 
 });
 

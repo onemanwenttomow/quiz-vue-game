@@ -44,8 +44,9 @@ new Vue({
         startGame: function() {
             this.showPickPieces = false;
             this.mainText = "Time Left: ";
-            this.countDownTimer();
+            // this.countDownTimer();
             socket.emit('gameStarted', true);
+            socket.emit('start timer');
         },
         restart: function() {
             socket.emit("restartGame", this.setTimeoutTracker);
@@ -66,16 +67,17 @@ new Vue({
             } else {
                 console.log("wrong!!");
             }
+
         },
         countDownTimer: function() {
-            this.timeLeft--;
-            console.log(this.timeLeft);
-            if (this.timeLeft === 0) {
-                this.correctAnswer = this.questions[this.questionCount].answer;
-                this.mainText = "Time's Up";
-                return;
-            }
-            this.setTimeoutTracker = setTimeout(this.countDownTimer,1000);
+            // this.timeLeft--;
+            // console.log(this.timeLeft);
+            // if (this.timeLeft === 0) {
+            //     this.correctAnswer = this.questions[this.questionCount].answer;
+            //     this.mainText = "Time's Up";
+            //     return;
+            // }
+            // this.setTimeoutTracker = setTimeout(this.countDownTimer,1000);
         },
         addSockets: function() {
             socket.on('pieces', (pieces) => {
@@ -98,6 +100,15 @@ new Vue({
                 this.timeLeft = 30;
                 this.correctAnswer = null;
                 clearTimeout(this.setTimeoutTracker);
+            });
+            socket.on('timeLeft', (timeLeft) => {
+                this.timeLeft = timeLeft;
+                console.log(this.timeLeft);
+                if (this.timeLeft === 0) {
+                    this.correctAnswer = this.questions[this.questionCount].answer;
+                    this.mainText = "Time's Up";
+                    return;
+                }
             });
         }
     }

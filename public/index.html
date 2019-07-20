@@ -11,7 +11,7 @@
         <main id="main">
             <img id="spiced" src="/spiced.png" alt="spiced">
             <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
-            <h1 v-if="showPickPieces || timeLeft === 0">{{mainText}}</h1>
+            <h1 v-if="showPickPieces || timeLeft <= 0">{{mainText}}</h1>
             <h1 v-else="!showPickPieces">{{mainText}}{{timeLeft}}secs</h1>
             <transition name="fade">
                 <ul id="player-pieces" v-if="showPickPieces">

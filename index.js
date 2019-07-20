@@ -6,8 +6,8 @@ let playerPieces    = require('./pieces').map(piece => {
     return piece = {
         piece: piece,
         selected: "",
-        x: 0,
-        y: 0
+        x: -30,
+        y: -30
     };
 });
 
@@ -48,12 +48,34 @@ io.on('connection', function(socket) {
         io.emit('gameStarted', false);
         io.emit('restart', this.setTimeoutTracker);
     });
+
+    socket.on('all pieces', function(allPieces) {
+        playerPieces = allPieces;
+    });
+
+    socket.on('new piece position', function(socketPiece) {
+        let updatedMovements = playerPieces.map(piece => {
+            if (piece.piece === socketPiece.piece) {
+                return {
+                    piece: piece.piece,
+                    selected: "selected",
+                    x: socketPiece.x,
+                    y: socketPiece.y
+                } ;
+            } else {
+                return piece;
+            }
+        });
+        io.emit('piece movements', updatedMovements);
+        console.log("after map:", updatedMovements);
+
+    });
+
     let time;
     socket.on('start timer', function() {
         time = 30;
         countDownTimer();
         function countDownTimer() {
-            console.log("time left: ", time);
             time--;
             io.emit('timeLeft', time);
             if (time <= -1 ) {

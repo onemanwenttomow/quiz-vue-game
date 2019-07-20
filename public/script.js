@@ -6,8 +6,8 @@ new Vue({
         playerPieces: [],
         selectedPiece: "",
         selectPieceCoordinates: {
-            x: 0,
-            y: 0
+            x: -30,
+            y: -30
         },
         showPickPieces: true,
         mainText: "Pick your player",
@@ -56,8 +56,8 @@ new Vue({
             this.selectedPiece = "";
             this.correctAnswer = null;
             this.timeLeft = 30;
-            this.selectPieceCoordinates.x = 0;
-            this.selectPieceCoordinates.y = 0;
+            this.selectPieceCoordinates.x = -30;
+            this.selectPieceCoordinates.y = -30;
         },
         selectedAnswer: function(id) {
             if (this.timeLeft === 0 || this.userSelectedAnswer === 0 || this.userSelectedAnswer) {
@@ -77,8 +77,15 @@ new Vue({
             if (this.userSelectedAnswer === 0 || this.userSelectedAnswer || this.timeLeft <= 0) {
                 return;
             }
+
             this.selectPieceCoordinates.x = e.pageX - 20;
             this.selectPieceCoordinates.y = e.pageY - 22;
+            socket.emit('all pieces', this.playerPieces);
+            socket.emit('new piece position', {
+                piece: this.selectedPiece,
+                x: e.pageX - 20,
+                y: e.pageY - 22
+            });
         },
         addSockets: function() {
             socket.on('pieces', (pieces) => {
@@ -107,6 +114,10 @@ new Vue({
                     this.mainText = "Time's Up";
                     return;
                 }
+            });
+            socket.on('piece movements', (updatedPieces) => {
+                console.log(updatedPieces);
+                this.playerPieces = updatedPieces;
             });
         }
     }

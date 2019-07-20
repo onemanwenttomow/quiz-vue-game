@@ -48,9 +48,14 @@
                     {{answer}}
                 </div>
                 <p
-                    :style="{left: selectPieceCoordinates.x + 'px', top: selectPieceCoordinates.y + 'px' }"
+                    v-for="piece in playerPieces"
                     class="moving-piece"
+                    v-if="piece.selected"
+                    :style="{left: piece.x + 'px', top: piece.y + 'px' }"
                 >
+                    {{piece.piece}}
+                </p>
+        
                     {{selectedPiece}}
                 </p>
             </div>

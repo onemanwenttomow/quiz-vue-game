@@ -36,6 +36,13 @@ new Vue({
         this.addSockets();
 
     },
+    computed: {
+        numberOfPlayers: function () {
+            return this.playerPieces.filter(piece => {
+                return piece.selected;
+            }).length;
+        }
+    },
     methods: {
         selectPiece: function(index) {
             if (this.playerPieces[index].selected === "selected" || this.selectedPiece) {

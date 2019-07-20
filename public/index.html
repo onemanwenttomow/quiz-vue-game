@@ -9,7 +9,7 @@
     </head>
     <body>
         <main id="main">
-            <p class="user-piece">{{selectedPiece}}</p>
+            <p class="user-piece">{{selectedPiece}} ({{numberOfPlayers}})</p>
             <img id="spiced" src="/spiced.png" alt="spiced">
             <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
             <h1 v-if="showPickPieces || timeLeft <= 0">{{mainText}}</h1>
@@ -55,9 +55,7 @@
                 >
                     {{piece.piece}}
                 </p>
-        
-                    {{selectedPiece}}
-                </p>
+
             </div>
 
 

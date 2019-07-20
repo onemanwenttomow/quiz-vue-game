@@ -77,6 +77,8 @@ h1 {
     grid-column: 2 / 3;
     grid-row:  1 / 2;
     justify-self: start;
+    align-self: start;
+    padding: 0.5vw;
 }
 
 #start {
@@ -106,26 +108,26 @@ h1 {
 
 .question {
     grid-column: 1/ -1;
-    font-size: 2.5em;
-    margin: 2vw;
+    font-size: 50px;
+    margin: 20px;
 }
 
 code {
     grid-row: 2 / 3;
     grid-column: 1 / -1;
     background-color: #151718;
-    margin: 0 2vw;
+    margin: 0 20px;
     color: #74f9ff;
-    padding: 2vw;
-    font-size: 2.5em;
+    padding: 20px;
+    font-size: 30px;
     white-space: pre;
 }
 
 .answer {
-    margin: 1vw 2vw;
-    padding: 1vw;
-    font-size: 1.5em;
-    border: solid 0.2vh #00e0ff;
+    margin: 10px 20px;
+    padding: 10px;
+    font-size: 20px;
+    border: solid 2px #00e0ff;
     text-align: center;
     align-self: end;
 }

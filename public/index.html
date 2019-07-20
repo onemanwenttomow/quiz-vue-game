@@ -9,6 +9,7 @@
     </head>
     <body>
         <main id="main">
+            <p class="user-piece">{{selectedPiece}}</p>
             <img id="spiced" src="/spiced.png" alt="spiced">
             <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
             <h1 v-if="showPickPieces || timeLeft <= 0">{{mainText}}</h1>
@@ -34,18 +35,24 @@
                 START
             </button>
 
-            <div class="quiz" v-if="!showPickPieces">
+            <div class="quiz" v-if="!showPickPieces" @mousemove="mouseMoving">
                 <div class="question" @click="checkAnswer">{{questions[questionCount].question}}</div>
                 <code>{{questions[questionCount].code}}</code>
                 <div
+                    v-for="(answer, index) in questions[questionCount].answers"
                     :id="correctAnswer === index ? 'correct-answer' : ''"
                     class="answer"
                     :class="userSelectedAnswer === index ? 'user-selected' : ''"
-                    v-for="(answer, index) in questions[questionCount].answers"
                     @click="selectedAnswer(index)"
                 >
                     {{answer}}
                 </div>
+                <p
+                    :style="{left: selectPieceCoordinates.x + 'px', top: selectPieceCoordinates.y + 'px' }"
+                    class="moving-piece"
+                >
+                    {{selectedPiece}}
+                </p>
             </div>
 
 

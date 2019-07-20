@@ -5,6 +5,10 @@ new Vue({
     data: {
         playerPieces: [],
         selectedPiece: "",
+        selectPieceCoordinates: {
+            x: 0,
+            y: 0
+        },
         showPickPieces: true,
         mainText: "Pick your player",
         userSelectedAnswer: null,
@@ -44,7 +48,6 @@ new Vue({
         startGame: function() {
             this.showPickPieces = false;
             this.mainText = "Time Left: ";
-            // this.countDownTimer();
             socket.emit('gameStarted', true);
             socket.emit('start timer');
         },
@@ -52,11 +55,12 @@ new Vue({
             socket.emit("restartGame", this.setTimeoutTracker);
             this.selectedPiece = "";
             this.correctAnswer = null;
-            clearTimeout(this.setTimeoutTracker);
             this.timeLeft = 30;
+            this.selectPieceCoordinates.x = 0;
+            this.selectPieceCoordinates.y = 0;
         },
         selectedAnswer: function(id) {
-            if (this.timeLeft === 0) {
+            if (this.timeLeft === 0 || this.userSelectedAnswer === 0 || this.userSelectedAnswer) {
                 return;
             }
             this.userSelectedAnswer = id;
@@ -69,15 +73,15 @@ new Vue({
             }
 
         },
-        countDownTimer: function() {
-            // this.timeLeft--;
-            // console.log(this.timeLeft);
-            // if (this.timeLeft === 0) {
-            //     this.correctAnswer = this.questions[this.questionCount].answer;
-            //     this.mainText = "Time's Up";
-            //     return;
-            // }
-            // this.setTimeoutTracker = setTimeout(this.countDownTimer,1000);
+        mouseMoving: function(e) {
+            // console.log(e);
+            console.log(this.userSelectedAnswer);
+
+            if (this.userSelectedAnswer === 0 || this.userSelectedAnswer) {
+                return;
+            }
+            this.selectPieceCoordinates.x = e.pageX - 20;
+            this.selectPieceCoordinates.y = e.pageY - 22;
         },
         addSockets: function() {
             socket.on('pieces', (pieces) => {
@@ -88,7 +92,6 @@ new Vue({
                 if (gameStarted) {
                     console.log("made it to here");
                     this.mainText = "Time Left: ";
-                    this.countDownTimer();
                 } else {
                     this.showPickPieces = true;
                     this.mainText = "Pick your player";
@@ -99,7 +102,6 @@ new Vue({
                 this.selectedPiece = "";
                 this.timeLeft = 30;
                 this.correctAnswer = null;
-                clearTimeout(this.setTimeoutTracker);
             });
             socket.on('timeLeft', (timeLeft) => {
                 this.timeLeft = timeLeft;

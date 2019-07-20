@@ -13,7 +13,7 @@ body {
 main {
     display: grid;
     grid-template-columns: 10vw 1fr 10vw;
-    /* grid-template-rows:  */
+    /* grid-template-rows: 30vh; */
 }
 
 h1 {
@@ -66,6 +66,12 @@ h1 {
     background-color: #a6fff2;
     border-radius: 50%;
     transition: background-color 0.5s linear;
+}
+
+.user-piece {
+    font-size: 3em;
+    justify-self: center;
+    align-self: center;
 }
 
 #start {
@@ -134,7 +140,9 @@ code {
     transition: 600ms;
 }
 
-
+.moving-piece {
+    position: absolute;
+}
 
 
 

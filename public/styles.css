@@ -132,6 +132,11 @@ code {
     align-self: end;
 }
 
+#keep-answer-on-top {
+    z-index: 100;
+    padding: 0 30px 10px 0;
+}
+
 .answer:hover {
     background-color: #a6fff2;
     transition: 200ms;
@@ -149,6 +154,21 @@ code {
 
 .moving-piece {
     position: absolute;
+    animation: fade 5s infinite;
+
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+
 }
 
 

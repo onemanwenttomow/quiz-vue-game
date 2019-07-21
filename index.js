@@ -2,6 +2,7 @@ const express       = require('express');
 const app           = express();
 const http          = require('http').createServer(app);
 const io            = require('socket.io')(http);
+const questions     = require('./questions');
 let playerPieces    = require('./pieces').map(piece => {
     return piece = {
         piece: piece,
@@ -23,7 +24,8 @@ io.on('connection', function(socket) {
     });
 
     socket.on('get pieces', function() {
-        io.emit('pieces', playerPieces);
+        console.log("get pieces" ,questions);
+        io.emit('pieces', playerPieces, questions);
         if (gameStarted) {
             io.emit('gameStarted', true);
         }
@@ -31,7 +33,7 @@ io.on('connection', function(socket) {
 
     socket.on('update piece', function(idx) {
         playerPieces[idx].selected = "selected";
-        io.emit('pieces', playerPieces);
+        io.emit('pieces', playerPieces, questions);
     });
 
     socket.on('gameStarted', function() {
@@ -44,9 +46,11 @@ io.on('connection', function(socket) {
             return piece.selected = "";
         });
         gameStarted = false;
-        io.emit('pieces', playerPieces);
+        time = 30;
+        clearTimeout(setTimeoutTracker);
+        io.emit('pieces', playerPieces, questions);
         io.emit('gameStarted', false);
-        io.emit('restart', this.setTimeoutTracker);
+        io.emit('restart');
     });
 
     socket.on('all pieces', function(allPieces) {
@@ -67,11 +71,11 @@ io.on('connection', function(socket) {
             }
         });
         io.emit('piece movements', updatedMovements);
-        console.log("after map:", updatedMovements);
 
     });
 
     let time;
+    let setTimeoutTracker;
     socket.on('start timer', function() {
         time = 30;
         countDownTimer();
@@ -81,7 +85,7 @@ io.on('connection', function(socket) {
             if (time <= -1 ) {
                 return;
             }
-            setTimeout(countDownTimer, 1000);
+            setTimeoutTracker = setTimeout(countDownTimer, 1000);
         }
     });
 

@@ -14,20 +14,7 @@ new Vue({
         userSelectedAnswer: null,
         correctAnswer: null,
         timeLeft: 30,
-        setTimeoutTracker: null,
-        questions: [
-            {
-                question: "When you click the paragraph, what's the logged output?",
-                code: `<div onclick="console.log('div')">
-  <p onclick="console.log('p')">
-    Click here!
-  </p>
-</div>`,
-                answers: ["p div", "div p", "p", "div"],
-                answer: 0,
-                explanation: "If we click p, we see two logs: p and div. During event propagation, there are 3 phases: capturing, target, and bubbling. By default, event handlers are executed in the bubbling phase (unless you set useCapture to true). It goes from the deepest nested element outwards."
-            }
-        ],
+        questions: [],
         questionCount: 0
     },
     mounted: function() {
@@ -53,18 +40,15 @@ new Vue({
             this.selectedPiece = this.playerPieces[index].piece;
         },
         startGame: function() {
+            console.log("questions: ", this.questions);
             this.showPickPieces = false;
             this.mainText = "Time Left: ";
             socket.emit('gameStarted', true);
             socket.emit('start timer');
         },
         restart: function() {
-            socket.emit("restartGame", this.setTimeoutTracker);
-            this.selectedPiece = "";
-            this.correctAnswer = null;
-            this.timeLeft = 30;
-            this.selectPieceCoordinates.x = -30;
-            this.selectPieceCoordinates.y = -30;
+            socket.emit("restartGame");
+
         },
         selectedAnswer: function(id) {
             if (this.timeLeft === 0 || this.userSelectedAnswer === 0 || this.userSelectedAnswer) {
@@ -81,7 +65,12 @@ new Vue({
 
         },
         mouseMoving: function(e) {
-            if (this.userSelectedAnswer === 0 || this.userSelectedAnswer || this.timeLeft <= 0) {
+            console.log(e.path[0].id);
+            if (this.userSelectedAnswer === 0 ||
+                this.userSelectedAnswer ||
+                this.timeLeft <= 0 ||
+                e.path[0].id === "keep-answer-on-top"
+            ) {
                 return;
             }
 
@@ -95,8 +84,11 @@ new Vue({
             });
         },
         addSockets: function() {
-            socket.on('pieces', (pieces) => {
+            socket.on('pieces', (pieces, questions) => {
+                console.log("questions: ", questions);
                 this.playerPieces = pieces;
+                this.questions = questions;
+                console.log("this.questions:" , this.questions);
             });
             socket.on('gameStarted', (gameStarted) => {
                 this.showPickPieces = !gameStarted;
@@ -111,8 +103,12 @@ new Vue({
             socket.on('restart', () => {
                 sessionStorage.setItem('piece', "");
                 this.selectedPiece = "";
-                this.timeLeft = 30;
                 this.correctAnswer = null;
+                this.timeLeft = 30;
+                this.selectPieceCoordinates.x = -30;
+                this.selectPieceCoordinates.y = -30;
+                this.questionCount = 0;
+                this.userSelectedAnswer = null;
             });
             socket.on('timeLeft', (timeLeft) => {
                 this.timeLeft = timeLeft;
@@ -123,7 +119,6 @@ new Vue({
                 }
             });
             socket.on('piece movements', (updatedPieces) => {
-                console.log(updatedPieces);
                 this.playerPieces = updatedPieces;
             });
         }

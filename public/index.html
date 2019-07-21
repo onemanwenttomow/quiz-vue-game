@@ -36,7 +36,7 @@
             </button>
 
             <div class="quiz" v-if="!showPickPieces" @mousemove="mouseMoving">
-                <div class="question" @click="checkAnswer">{{questions[questionCount].question}}</div>
+                <div v-if="questions.length" class="question" @click="checkAnswer">{{questions[questionCount].question}}</div>
                 <code>{{questions[questionCount].code}}</code>
                 <div
                     v-for="(answer, index) in questions[questionCount].answers"
@@ -45,7 +45,7 @@
                     :class="userSelectedAnswer === index ? 'user-selected' : ''"
                     @click="selectedAnswer(index)"
                 >
-                    {{answer}}
+                    <span id="keep-answer-on-top">{{answer}}</span>
                 </div>
                 <p
                     v-for="piece in playerPieces"

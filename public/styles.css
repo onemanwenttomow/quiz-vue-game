@@ -28,10 +28,10 @@ h1 {
 #spiced {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
-    width: 40%;
+    width: 150px;
     /* margin-top: 2vw; */
     padding: 1vw;
-    justify-self: center;
+    justify-self: end;
     align-self: start;
 }
 
@@ -39,6 +39,13 @@ h1 {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     justify-self: center;
+    align-self: end;
+}
+
+#next-question {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    justify-self: end;
     align-self: end;
 }
 
@@ -126,13 +133,15 @@ code {
 .answer {
     margin: 10px 20px;
     padding: 10px;
-    font-size: 20px;
+    font-size: 30px;
     border: solid 2px #00e0ff;
     text-align: center;
-    align-self: end;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.wrong {
+.answer.wrong {
     background-color: orangered;
     transition: 600ms;
 }
@@ -157,6 +166,22 @@ code {
     position: absolute;
     animation: fade 5s infinite;
 
+}
+
+.explanation {
+    font-family: 'Raleway', sans-serif;
+    margin: 10px;
+}
+
+.explanation summary {
+    margin: 10px 0;
+    font-size: 20px;
+}
+
+.explanation p {
+    background-color: #a6fff2;
+    font-size: 16px;
+    padding: 20px;
 }
 
 @keyframes fade {

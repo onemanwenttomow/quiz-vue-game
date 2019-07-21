@@ -12,6 +12,7 @@
             <p class="user-piece">{{selectedPiece}} ({{numberOfPlayers}})</p>
             <img id="spiced" src="/spiced.png" alt="spiced">
             <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
+            <p id="next-question" v-if="questions.length && selectedPiece ==='🐌'" @click="nextQuestion">Next Question</p>
             <h1 v-if="showPickPieces || timeLeft <= 0">{{mainText}}</h1>
             <h1 v-else="!showPickPieces">{{mainText}}{{timeLeft}}secs</h1>
             <transition name="fade">
@@ -47,6 +48,7 @@
                 >
                     {{answer}}
                 </div>
+
                 <p
                     v-for="piece in playerPieces"
                     class="moving-piece"
@@ -58,6 +60,12 @@
 
             </div>
 
+            <details v-if="timeLeft <= 0 && questions.length" class="explanation">
+                <summary >Explanation</summary>
+                <p>
+                    {{questions[questionCount].explanation}}
+                </p>
+            </details>
 
 
         </main>

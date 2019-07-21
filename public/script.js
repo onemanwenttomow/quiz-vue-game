@@ -38,6 +38,9 @@ new Vue({
         }
     },
     methods: {
+        nextQuestion: function() {
+            this.questionCount++;
+        },
         selectPiece: function(index) {
             if (this.playerPieces[index].selected === "selected" || this.selectedPiece) {
                 return;
@@ -72,7 +75,6 @@ new Vue({
 
         },
         mouseMoving: function(e) {
-            console.log(e.path[0].id);
             if (this.userSelectedAnswer === 0 ||
                 this.userSelectedAnswer ||
                 this.timeLeft <= 0
@@ -91,15 +93,12 @@ new Vue({
         },
         addSockets: function() {
             socket.on('pieces', (pieces, questions) => {
-                console.log("questions: ", questions);
                 this.playerPieces = pieces;
                 this.questions = questions;
-                console.log("this.questions:" , this.questions);
             });
             socket.on('gameStarted', (gameStarted) => {
                 this.showPickPieces = !gameStarted;
                 if (gameStarted) {
-                    console.log("made it to here");
                     this.mainText = "Time Left: ";
                 } else {
                     this.showPickPieces = true;

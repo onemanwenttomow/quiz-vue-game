@@ -132,10 +132,11 @@ code {
     align-self: end;
 }
 
-#keep-answer-on-top {
-    z-index: 100;
-    padding: 0 30px 10px 0;
+.wrong {
+    background-color: orangered;
+    transition: 600ms;
 }
+
 
 .answer:hover {
     background-color: #a6fff2;

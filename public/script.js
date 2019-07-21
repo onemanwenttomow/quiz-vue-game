@@ -28,6 +28,13 @@ new Vue({
             return this.playerPieces.filter(piece => {
                 return piece.selected;
             }).length;
+        },
+        wrongAnswer: function() {
+            if (this.timeLeft <= 0) {
+                return [0, 1, 2, 3].filter(answer => answer != this.correctAnswer);
+            } else {
+                return [];
+            }
         }
     },
     methods: {
@@ -68,8 +75,7 @@ new Vue({
             console.log(e.path[0].id);
             if (this.userSelectedAnswer === 0 ||
                 this.userSelectedAnswer ||
-                this.timeLeft <= 0 ||
-                e.path[0].id === "keep-answer-on-top"
+                this.timeLeft <= 0
             ) {
                 return;
             }

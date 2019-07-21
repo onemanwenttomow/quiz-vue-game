@@ -42,10 +42,10 @@
                     v-for="(answer, index) in questions[questionCount].answers"
                     :id="correctAnswer === index ? 'correct-answer' : ''"
                     class="answer"
-                    :class="userSelectedAnswer === index ? 'user-selected' : ''"
+                    :class="[userSelectedAnswer === index ? 'user-selected' : '', wrongAnswer.includes(index) ? 'wrong' : '']"
                     @click="selectedAnswer(index)"
                 >
-                    <span id="keep-answer-on-top">{{answer}}</span>
+                    {{answer}}
                 </div>
                 <p
                     v-for="piece in playerPieces"

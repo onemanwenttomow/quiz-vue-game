@@ -15,7 +15,8 @@ new Vue({
         correctAnswer: null,
         timeLeft: 30,
         questions: [],
-        questionCount: 0
+        questionCount: 0,
+        scores: []
     },
     mounted: function() {
         this.selectedPiece = sessionStorage.getItem('piece');
@@ -31,15 +32,27 @@ new Vue({
         },
         wrongAnswer: function() {
             if (this.timeLeft <= 0) {
-                return [0, 1, 2, 3].filter(answer => answer != this.correctAnswer);
+                return [0, 1, 2, 3, 4].filter(answer => answer != this.correctAnswer);
             } else {
                 return [];
             }
+        },
+        percentageScore: function() {
+            console.log("scores: ", this.scores);
+            console.log(this.scores[this.questionCount] / this.numberOfPlayers + "%");
+            console.log(this.numberOfPlayers);
+            console.log(this.scores[this.questionCount]);
+            return Math.round(this.scores[this.questionCount] / this.numberOfPlayers * 100) + "%";
+
         }
     },
     methods: {
         nextQuestion: function() {
             this.questionCount++;
+            this.correctAnswer = null;
+            this.userSelectedAnswer = null;
+            this.mainText = "Time Left: ",
+            socket.emit('next question');
         },
         selectPiece: function(index) {
             if (this.playerPieces[index].selected === "selected" || this.selectedPiece) {
@@ -50,7 +63,6 @@ new Vue({
             this.selectedPiece = this.playerPieces[index].piece;
         },
         startGame: function() {
-            console.log("questions: ", this.questions);
             this.showPickPieces = false;
             this.mainText = "Time Left: ";
             socket.emit('gameStarted', true);
@@ -68,6 +80,7 @@ new Vue({
         },
         checkAnswer: function() {
             if (this.userSelectedAnswer === this.questions[this.questionCount].answer) {
+                socket.emit('correct answer');
                 console.log("correct!");
             } else {
                 console.log("wrong!!");
@@ -82,13 +95,13 @@ new Vue({
                 return;
             }
 
-            this.selectPieceCoordinates.x = e.pageX - 20;
-            this.selectPieceCoordinates.y = e.pageY - 22;
+            this.selectPieceCoordinates.x = e.pageX - 15;
+            this.selectPieceCoordinates.y = e.pageY - 15;
             socket.emit('all pieces', this.playerPieces);
             socket.emit('new piece position', {
                 piece: this.selectedPiece,
-                x: e.pageX - 20,
-                y: e.pageY - 22
+                x: e.pageX - 15,
+                y: e.pageY - 15
             });
         },
         addSockets: function() {
@@ -110,8 +123,8 @@ new Vue({
                 this.selectedPiece = "";
                 this.correctAnswer = null;
                 this.timeLeft = 30;
-                this.selectPieceCoordinates.x = -30;
-                this.selectPieceCoordinates.y = -30;
+                this.selectPieceCoordinates.x = -15;
+                this.selectPieceCoordinates.y = -15;
                 this.questionCount = 0;
                 this.userSelectedAnswer = null;
             });
@@ -120,11 +133,23 @@ new Vue({
                 if (this.timeLeft === 0) {
                     this.correctAnswer = this.questions[this.questionCount].answer;
                     this.mainText = "Time's Up";
+                    this.checkAnswer();
                     return;
                 }
             });
             socket.on('piece movements', (updatedPieces) => {
                 this.playerPieces = updatedPieces;
+            });
+            socket.on('next question', () => {
+                this.questionCount++;
+                this.correctAnswer = null;
+                this.userSelectedAnswer = null;
+                this.mainText = "Time Left: ",
+                console.log("question count updated");
+            });
+            socket.on('total score', (totalScore) => {
+                console.log(totalScore);
+                this.scores[this.questionCount] = totalScore;
             });
         }
     }

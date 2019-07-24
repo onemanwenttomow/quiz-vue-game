@@ -7,8 +7,8 @@ let playerPieces    = require('./pieces').map(piece => {
     return piece = {
         piece: piece,
         selected: "",
-        x: -30,
-        y: -30
+        x: -15,
+        y: -15
     };
 });
 
@@ -16,6 +16,7 @@ app.use(express.static('public'));
 
 
 let gameStarted = false;
+let totalScore = 0;
 
 io.on('connection', function(socket) {
     console.log('a user connected', socket.id);
@@ -24,7 +25,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('get pieces', function() {
-        console.log("get pieces" ,questions);
         io.emit('pieces', playerPieces, questions);
         if (gameStarted) {
             io.emit('gameStarted', true);
@@ -47,6 +47,7 @@ io.on('connection', function(socket) {
         });
         gameStarted = false;
         time = 30;
+        totalScore = 0;
         clearTimeout(setTimeoutTracker);
         io.emit('pieces', playerPieces, questions);
         io.emit('gameStarted', false);
@@ -55,6 +56,14 @@ io.on('connection', function(socket) {
 
     socket.on('all pieces', function(allPieces) {
         playerPieces = allPieces;
+    });
+
+
+    socket.on('correct answer', function() {
+        console.log("correct answer: ", totalScore);
+        totalScore++;
+        console.log("correct answer after: ", totalScore);
+        io.emit('total score', totalScore);
     });
 
     socket.on('new piece position', function(socketPiece) {
@@ -74,20 +83,30 @@ io.on('connection', function(socket) {
 
     });
 
+    socket.on('next question', function() {
+        socket.broadcast.emit('next question');
+        time = 30;
+        totalScore = 0;
+        clearTimeout(setTimeoutTracker);
+        countDownTimer();
+    });
+
     let time;
     let setTimeoutTracker;
+
     socket.on('start timer', function() {
         time = 30;
         countDownTimer();
-        function countDownTimer() {
-            time--;
-            io.emit('timeLeft', time);
-            if (time <= -1 ) {
-                return;
-            }
-            setTimeoutTracker = setTimeout(countDownTimer, 1000);
-        }
     });
+
+    function countDownTimer() {
+        time--;
+        io.emit('timeLeft', time);
+        if (time <= -1 ) {
+            return;
+        }
+        setTimeoutTracker = setTimeout(countDownTimer, 1000);
+    }
 
 });
 

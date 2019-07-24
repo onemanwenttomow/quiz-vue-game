@@ -60,12 +60,27 @@
 
             </div>
 
-            <details v-if="timeLeft <= 0 && questions.length" class="explanation">
-                <summary >Explanation</summary>
-                <p>
-                    {{questions[questionCount].explanation}}
-                </p>
-            </details>
+            <div class="side-bar">
+                <details v-if="timeLeft <= 0 && questions.length" class="explanation">
+                    <summary >Explanation</summary>
+                    <p>
+                        {{questions[questionCount].explanation}}
+                    </p>
+                </details>
+
+                <div class="score-board" v-if="scores[questionCount]">
+                    <div class="question-title table flex-center table-header">Question</div>
+                    <div class="table flex-center table-header">Percentage Correct</div>
+                    <div class="questions table" v-for="(score, index) in scores">
+                        {{index+1}}
+                    </div>
+                    <div class="percentages table" v-for="score in scores">
+                        {{percentageScore}}
+                    </div>
+                </div>
+
+            </div>
+
 
 
         </main>

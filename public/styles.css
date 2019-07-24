@@ -13,7 +13,6 @@ body {
 main {
     display: grid;
     grid-template-columns: 800px 1fr;
-    /* grid-template-rows: 30vh; */
 }
 
 h1 {
@@ -45,7 +44,7 @@ h1 {
 #next-question {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
-    justify-self: end;
+    justify-self: start;
     align-self: end;
 }
 
@@ -165,12 +164,19 @@ code {
 .moving-piece {
     position: absolute;
     animation: fade 5s infinite;
+    pointer-events: none;
+}
 
+.side-bar {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
 }
 
 .explanation {
     font-family: 'Raleway', sans-serif;
     margin: 10px;
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
 }
 
 .explanation summary {
@@ -182,6 +188,48 @@ code {
     background-color: #a6fff2;
     font-size: 16px;
     padding: 20px;
+}
+
+.score-board {
+    height: 200px;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    margin: 1vw;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: repeat(5, 1fr);
+    grid-gap: 10px;
+    grid-auto-flow: row dense;
+    font-family: 'Raleway', sans-serif;
+}
+
+.table {
+    background-color: #a6fff2;
+    text-align: center;
+}
+
+.table-header {
+    background-color: #e8ffe8;
+}
+
+.questions {
+    align-self: center;
+    padding: 10px;
+    grid-column: 1 / 2;
+}
+
+.percentages {
+    align-self: center;
+    padding: 10px;
+    grid-column: 2 / 3;
+}
+
+
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @keyframes fade {

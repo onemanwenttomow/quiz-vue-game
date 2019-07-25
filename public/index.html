@@ -68,14 +68,18 @@
                     </p>
                 </details>
 
-                <div class="score-board" v-if="scores[questionCount]">
+                <div class="score-board" v-if="scores.length > 0">
                     <div class="question-title table flex-center table-header">Question</div>
-                    <div class="table flex-center table-header">Percentage Correct</div>
+                    <div class="table flex-center table-header">%</div>
+                    <div class="table flex-center table-header">Who got it right?</div>
                     <div class="questions table" v-for="(score, index) in scores">
                         {{index+1}}
                     </div>
                     <div class="percentages table" v-for="score in scores">
-                        {{percentageScore}}
+                        {{score.percentage}}
+                    </div>
+                    <div class="winners table" v-for="score in scores">
+                        <span v-for="piece in score.correctAnswerPieces">{{piece}}</span>
                     </div>
                 </div>
 
@@ -84,6 +88,10 @@
 
 
         </main>
+
+        <script type="text/x-template" id="player-pieces-container">
+
+        </script>
 
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue"></script>

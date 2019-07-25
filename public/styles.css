@@ -28,7 +28,6 @@ h1 {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
     width: 150px;
-    /* margin-top: 2vw; */
     padding: 1vw;
     justify-self: end;
     align-self: start;
@@ -110,6 +109,9 @@ h1 {
     grid-template-columns: repeat(2, 1fr);
     background-color: #e8ffe8;
     margin: 1vw;
+    /* box-shadow: 1px 10px 15px 9px #74f9ff; */
+    border-bottom: 3px solid #74f9ff;
+    border-right: 3px solid #74f9ff;
 }
 
 .question {
@@ -188,6 +190,7 @@ code {
     background-color: #a6fff2;
     font-size: 16px;
     padding: 20px;
+    position: absolute;
 }
 
 .score-board {
@@ -196,7 +199,7 @@ code {
     grid-row: 1 / 2;
     margin: 1vw;
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: repeat(5, 1fr);
     grid-gap: 10px;
     grid-auto-flow: row dense;
@@ -206,10 +209,13 @@ code {
 .table {
     background-color: #a6fff2;
     text-align: center;
+    border-bottom: 2px solid #74f9ff;
+    border-right: 2px solid #74f9ff;
 }
 
 .table-header {
     background-color: #e8ffe8;
+    font-weight: bold;
 }
 
 .questions {
@@ -224,12 +230,17 @@ code {
     grid-column: 2 / 3;
 }
 
+.winners {
+    padding: 10px;
+}
+
 
 
 .flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px 0;
 }
 
 @keyframes fade {

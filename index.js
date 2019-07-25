@@ -17,6 +17,7 @@ app.use(express.static('public'));
 
 let gameStarted = false;
 let totalScore = 0;
+let correctAnswerPieces = [];
 
 io.on('connection', function(socket) {
     console.log('a user connected', socket.id);
@@ -48,6 +49,7 @@ io.on('connection', function(socket) {
         gameStarted = false;
         time = 30;
         totalScore = 0;
+        correctAnswerPieces = [];
         clearTimeout(setTimeoutTracker);
         io.emit('pieces', playerPieces, questions);
         io.emit('gameStarted', false);
@@ -59,11 +61,14 @@ io.on('connection', function(socket) {
     });
 
 
-    socket.on('correct answer', function() {
+    socket.on('correct answer', function(correct, piece) {
         console.log("correct answer: ", totalScore);
-        totalScore++;
+        console.log("correct: ", correct);
+        console.log("piece", piece);
+        correct && totalScore++;
+        correct && correctAnswerPieces.push(piece);
         console.log("correct answer after: ", totalScore);
-        io.emit('total score', totalScore);
+        io.emit('total score', totalScore, correctAnswerPieces);
     });
 
     socket.on('new piece position', function(socketPiece) {
@@ -85,6 +90,7 @@ io.on('connection', function(socket) {
 
     socket.on('next question', function() {
         socket.broadcast.emit('next question');
+        correctAnswerPieces = [];
         time = 30;
         totalScore = 0;
         clearTimeout(setTimeoutTracker);

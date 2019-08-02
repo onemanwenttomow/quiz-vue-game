@@ -16,7 +16,8 @@ new Vue({
         timeLeft: 30,
         questions: [],
         questionCount: 0,
-        scores: []
+        scores: [],
+        numberOfQuizes: [0]
     },
     mounted: function() {
         this.selectedPiece = sessionStorage.getItem('piece');
@@ -25,10 +26,8 @@ new Vue({
         }
         if (sessionStorage.getItem('scores')) {
             var scores = sessionStorage.getItem('scores');
-            console.log(scores);
             this.scores = JSON.parse(scores);
         }
-        // console.log("scores.length: ", this.scores.length, JSON.parse(this.scores).length, this.questionCount);
         socket.emit('get pieces');
         this.addSockets();
 
@@ -84,10 +83,8 @@ new Vue({
         checkAnswer: function() {
             if (this.timeLeft === 0 && this.userSelectedAnswer === this.questions[this.questionCount].answer) {
                 socket.emit('correct answer', true, this.selectedPiece);
-                console.log("correct!");
             } else {
                 socket.emit('correct answer', false);
-                console.log("wrong!!");
             }
 
         },
@@ -154,19 +151,21 @@ new Vue({
                 this.userSelectedAnswer = null;
                 this.mainText = "Time Left: ",
                 sessionStorage.setItem('questionCount', this.questionCount);
-                console.log("question count updated");
             });
             socket.on('total score', (totalScore, correctAnswerPieces) => {
-                console.log("correctAnswerPieces: ", correctAnswerPieces);
-                console.log(totalScore);
-                console.log("this.scores: ", this.scores);
-                console.log("this.questionCount: ", this.questionCount);
                 this.scores[this.questionCount] = {
                     totalScore: totalScore,
                     percentage: Math.round(totalScore / this.numberOfPlayers * 100) + "%",
                     correctAnswerPieces: correctAnswerPieces
                 };
                 sessionStorage.setItem('scores', JSON.stringify(this.scores));
+            });
+
+            socket.on('number of quizes', (numberOfQuizes) => {
+                console.log("number of quizes: ", numberOfQuizes);
+                for (let i = 0; i < numberOfQuizes; i++ ) {
+                    this.numberOfQuizes.push(i);
+                }
             });
         }
     }

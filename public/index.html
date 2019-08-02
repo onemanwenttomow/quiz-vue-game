@@ -14,7 +14,7 @@
             <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
             <p id="next-question" v-if="questions.length && selectedPiece ==='🐌'" @click="nextQuestion">Next Question</p>
             <h1 v-if="showPickPieces || timeLeft <= 0">{{mainText}}</h1>
-            <h1 v-else="!showPickPieces">{{mainText}}{{timeLeft}}secs</h1>
+            <h1 v-else="!showPickPieces">{{mainText}}<span id="timeleft">{{timeLeft}}</span>secs</h1>
             <transition name="fade">
                 <ul id="player-pieces" v-if="showPickPieces">
                     <li
@@ -61,16 +61,11 @@
             </div>
 
             <div class="side-bar">
-                <details v-if="timeLeft <= 0 && questions.length" class="explanation">
-                    <summary >Explanation</summary>
-                    <p>
-                        {{questions[questionCount].explanation}}
-                    </p>
-                </details>
+
 
                 <div class="score-board" v-if="scores.length > 0">
                     <div class="question-title table flex-center table-header">Question</div>
-                    <div class="table flex-center table-header">%</div>
+                    <div class="table flex-center table-header">% Correct</div>
                     <div class="table flex-center table-header">Who got it right?</div>
                     <div class="questions table" v-for="(score, index) in scores">
                         {{index+1}}
@@ -83,6 +78,12 @@
                     </div>
                 </div>
 
+                <details v-if="timeLeft <= 0 && questions.length" class="explanation">
+                    <summary >Explanation</summary>
+                    <p>
+                        {{questions[questionCount].explanation}}
+                    </p>
+                </details>
             </div>
 
 

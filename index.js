@@ -18,6 +18,7 @@ app.use(express.static('public'));
 let gameStarted = false;
 let totalScore = 0;
 let correctAnswerPieces = [];
+let questionBank = 0;
 
 io.on('connection', function(socket) {
     console.log('a user connected', socket.id);
@@ -25,8 +26,15 @@ io.on('connection', function(socket) {
         console.log(`socket with the id ${socket.id} is now disconnected`);
     });
 
+    io.emit('number of quizes', questions.length);
+
+    socket.on('quiz to use', function(questionBankToUse) {
+        questionBank = questionBankToUse;
+        io.emit('pieces', playerPieces, questions[questionBank]);
+    });
+
     socket.on('get pieces', function() {
-        io.emit('pieces', playerPieces, questions);
+        io.emit('pieces', playerPieces, questions[questionBank]);
         if (gameStarted) {
             io.emit('gameStarted', true);
         }
@@ -34,7 +42,7 @@ io.on('connection', function(socket) {
 
     socket.on('update piece', function(idx) {
         playerPieces[idx].selected = "selected";
-        io.emit('pieces', playerPieces, questions);
+        io.emit('pieces', playerPieces, questions[questionBank]);
     });
 
     socket.on('gameStarted', function() {
@@ -51,7 +59,7 @@ io.on('connection', function(socket) {
         totalScore = 0;
         correctAnswerPieces = [];
         clearTimeout(setTimeoutTracker);
-        io.emit('pieces', playerPieces, questions);
+        io.emit('pieces', playerPieces, questions[questionBank]);
         io.emit('gameStarted', false);
         io.emit('restart');
     });

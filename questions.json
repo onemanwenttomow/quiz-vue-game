@@ -1,23 +1,63 @@
 [
-    {
-        "question": "When you click the paragraph, what's the logged output?",
-        "code": "<div onclick=\"console.log('div')\">\n  <p onclick=\"console.log('p')\">\n    Click here!\n  </p>\n</div>",
-        "answers": ["p div", "div p", "p", "div"],
-        "answer": 0,
-        "explanation": "If we click p, we see two logs: p and div. During event propagation, there are 3 phases: capturing, target, and bubbling. By default, event handlers are executed in the bubbling phase (unless you set useCapture to true). It goes from the deepest nested element outwards."
-    },
-    {
-        "question": " What's the output?",
-        "code": "const user = { name: \"Lydia\", age: 21 };\nconst admin = { admin: true, ...user };\n\nconsole.log(admin);",
-        "answers": ["{ admin: true, user: { name: \"Lydia\", age: 21 } }", "{ admin: true, name: \"Lydia\", age: 21 }", "{ admin: true, user: [\"Lydia\", 21] }", "{ admin: true }"],
-        "answer": 1,
-        "explanation": "It's possible to combine objects using the spread operator .... It lets you create copies of the key/value pairs of one object, and add them to another object. In this case, we create copies of the user object, and add them to the admin object. The admin object now contains the copied key/value pairs, which results in { admin: true, name: \"Lydia\", age: 21 }."
-    },
-    {
-        "question": " What's the output?",
-        "code": "function sum(a, b) {\n  return a + b;\n}\n\nsum(1, \"2\");",
-        "answers": ["NaN", "TypeError", "\"12\"", "3"],
-        "answer": 2,
-        "explanation": "JavaScript is a dynamically typed language: we don't specify what types certain variables are. Values can automatically be converted into another type without you knowing, which is called implicit type coercion. Coercion is converting from one type into another.\n\nIn this example, JavaScript converts the number 1 into a string, in order for the function to make sense and return a value. During the addition of a numeric type (1) and a string type ('2'), the number is treated as a string. We can concatenate strings like \"Hello\" + \"World\", so what's happening here is \"1\" + \"2\" which returns \"12\"."
-    }
+    [
+        {
+            "question": "When you click the paragraph, what's the logged output?",
+            "code": "<div onclick=\"console.log('div')\">\n  <p onclick=\"console.log('p')\">\n    Click here!\n  </p>\n</div>",
+            "answers": ["p div", "div p", "p", "div"],
+            "answer": 0,
+            "explanation": "If we click p, we see two logs: p and div. During event propagation, there are 3 phases: capturing, target, and bubbling. By default, event handlers are executed in the bubbling phase (unless you set useCapture to true). It goes from the deepest nested element outwards."
+        },
+        {
+            "question": " What's the output?",
+            "code": "const user = { name: \"Lydia\", age: 21 };\nconst admin = { admin: true, ...user };\n\nconsole.log(admin);",
+            "answers": ["{ admin: true, user: { name: \"Lydia\", age: 21 } }", "{ admin: true, name: \"Lydia\", age: 21 }", "{ admin: true, user: [\"Lydia\", 21] }", "{ admin: true }"],
+            "answer": 1,
+            "explanation": "It's possible to combine objects using the spread operator .... It lets you create copies of the key/value pairs of one object, and add them to another object. In this case, we create copies of the user object, and add them to the admin object. The admin object now contains the copied key/value pairs, which results in { admin: true, name: \"Lydia\", age: 21 }."
+        },
+        {
+            "question": " What's the output?",
+            "code": "function sum(a, b) {\n  return a + b;\n}\n\nsum(1, \"2\");",
+            "answers": ["NaN", "TypeError", "\"12\"", "3"],
+            "answer": 2,
+            "explanation": "JavaScript is a dynamically typed language: we don't specify what types certain variables are. Values can automatically be converted into another type without you knowing, which is called implicit type coercion. Coercion is converting from one type into another.\n\nIn this example, JavaScript converts the number 1 into a string, in order for the function to make sense and return a value. During the addition of a numeric type (1) and a string type ('2'), the number is treated as a string. We can concatenate strings like \"Hello\" + \"World\", so what's happening here is \"1\" + \"2\" which returns \"12\"."
+        },
+        {
+            "question": " What's the output?",
+            "code": "const set = new Set([1, 1, 2, 3, 4]);\n\n console.log(set);",
+            "answers": ["[1, 1, 2, 3, 4]", "[1, 2, 3, 4]", "{1, 1, 2, 3, 4}", "{1, 2, 3, 4}"],
+            "answer": 3,
+            "explanation": "The Set object is a collection of unique values: a value can only occur once in a set.\n \n We passed the iterable [1, 1, 2, 3, 4] with a duplicate value 1. Since we cannot have two of the same values in a set, one of them is removed. This results in {1, 2, 3, 4}."
+        }
+    ],
+    [
+        {
+            "question": "When you click the paragraph, what's the logged output?",
+            "code": "<div onclick=\"console.log('div')\">\n  <p onclick=\"console.log('p')\">\n    Click here!\n  </p>\n</div>",
+            "answers": ["p div", "div p", "p", "div"],
+            "answer": 0,
+            "explanation": "If we click p, we see two logs: p and div. During event propagation, there are 3 phases: capturing, target, and bubbling. By default, event handlers are executed in the bubbling phase (unless you set useCapture to true). It goes from the deepest nested element outwards."
+        },
+        {
+            "question": " What's the output?",
+            "code": "const user = { name: \"Lydia\", age: 21 };\nconst admin = { admin: true, ...user };\n\nconsole.log(admin);",
+            "answers": ["{ admin: true, user: { name: \"Lydia\", age: 21 } }", "{ admin: true, name: \"Lydia\", age: 21 }", "{ admin: true, user: [\"Lydia\", 21] }", "{ admin: true }"],
+            "answer": 1,
+            "explanation": "It's possible to combine objects using the spread operator .... It lets you create copies of the key/value pairs of one object, and add them to another object. In this case, we create copies of the user object, and add them to the admin object. The admin object now contains the copied key/value pairs, which results in { admin: true, name: \"Lydia\", age: 21 }."
+        },
+        {
+            "question": " What's the output?",
+            "code": "function sum(a, b) {\n  return a + b;\n}\n\nsum(1, \"2\");",
+            "answers": ["NaN", "TypeError", "\"12\"", "3"],
+            "answer": 2,
+            "explanation": "JavaScript is a dynamically typed language: we don't specify what types certain variables are. Values can automatically be converted into another type without you knowing, which is called implicit type coercion. Coercion is converting from one type into another.\n\nIn this example, JavaScript converts the number 1 into a string, in order for the function to make sense and return a value. During the addition of a numeric type (1) and a string type ('2'), the number is treated as a string. We can concatenate strings like \"Hello\" + \"World\", so what's happening here is \"1\" + \"2\" which returns \"12\"."
+        },
+        {
+            "question": " What's the output?",
+            "code": "const set = new Set([1, 1, 2, 3, 4]);\n\n console.log(set);",
+            "answers": ["[1, 1, 2, 3, 4]", "[1, 2, 3, 4]", "{1, 1, 2, 3, 4}", "{1, 2, 3, 4}"],
+            "answer": 3,
+            "explanation": "The Set object is a collection of unique values: a value can only occur once in a set.\n \n We passed the iterable [1, 1, 2, 3, 4] with a duplicate value 1. Since we cannot have two of the same values in a set, one of them is removed. This results in {1, 2, 3, 4}."
+        }
+    ]
+
 ]

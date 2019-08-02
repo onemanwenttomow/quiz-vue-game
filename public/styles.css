@@ -33,6 +33,10 @@ h1 {
     align-self: start;
 }
 
+#timeleft {
+    color: #a6fff2;
+}
+
 #restart {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
@@ -88,7 +92,7 @@ h1 {
 
 #start {
     grid-column: 1 / 2;
-    margin-top: 10vh;
+    margin-top: 1vh;
     font-size: 4em;
     font-family: 'Barriecito', cursive;
     background-color: #a6fff2;
@@ -134,12 +138,14 @@ code {
 .answer {
     margin: 10px 20px;
     padding: 10px;
-    font-size: 30px;
     border: solid 2px #00e0ff;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-size: 25px;
+    padding: 20px;
 }
 
 .answer.wrong {
@@ -171,14 +177,12 @@ code {
 
 .side-bar {
     display: grid;
-    grid-template-rows: 1fr 1fr;
 }
 
 .explanation {
     font-family: 'Raleway', sans-serif;
     margin: 10px;
     grid-column: 1 / -1;
-    grid-row: 2 / 3;
 }
 
 .explanation summary {

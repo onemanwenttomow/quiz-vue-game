@@ -18,23 +18,22 @@ app.use(express.static('public'));
 let gameStarted = false;
 let totalScore = 0;
 let correctAnswerPieces = [];
-let questionBank = 0;
 
 io.on('connection', function(socket) {
     console.log('a user connected', socket.id);
     socket.on('disconnect', function() {
         console.log(`socket with the id ${socket.id} is now disconnected`);
     });
+    console.log("number of quizes: ", questions.length);
 
     io.emit('number of quizes', questions.length);
 
     socket.on('quiz to use', function(questionBankToUse) {
-        questionBank = questionBankToUse;
-        io.emit('pieces', playerPieces, questions[questionBank]);
+        io.emit('new quiz number', questionBankToUse);
     });
 
     socket.on('get pieces', function() {
-        io.emit('pieces', playerPieces, questions[questionBank]);
+        io.emit('pieces', playerPieces, questions);
         if (gameStarted) {
             io.emit('gameStarted', true);
         }
@@ -42,7 +41,7 @@ io.on('connection', function(socket) {
 
     socket.on('update piece', function(idx) {
         playerPieces[idx].selected = "selected";
-        io.emit('pieces', playerPieces, questions[questionBank]);
+        io.emit('pieces', playerPieces, questions);
     });
 
     socket.on('gameStarted', function() {
@@ -59,7 +58,7 @@ io.on('connection', function(socket) {
         totalScore = 0;
         correctAnswerPieces = [];
         clearTimeout(setTimeoutTracker);
-        io.emit('pieces', playerPieces, questions[questionBank]);
+        io.emit('pieces', playerPieces, questions);
         io.emit('gameStarted', false);
         io.emit('restart');
     });
@@ -70,12 +69,8 @@ io.on('connection', function(socket) {
 
 
     socket.on('correct answer', function(correct, piece) {
-        console.log("correct answer: ", totalScore);
-        console.log("correct: ", correct);
-        console.log("piece", piece);
         correct && totalScore++;
         correct && correctAnswerPieces.push(piece);
-        console.log("correct answer after: ", totalScore);
         io.emit('total score', totalScore, correctAnswerPieces);
     });
 

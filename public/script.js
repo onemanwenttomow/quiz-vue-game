@@ -17,7 +17,7 @@ new Vue({
         questions: [],
         questionCount: 0,
         scores: [],
-        numberOfQuizes: [0]
+        quizNumber: 0,
     },
     mounted: function() {
         this.selectedPiece = sessionStorage.getItem('piece');
@@ -66,13 +66,17 @@ new Vue({
         startGame: function() {
             this.showPickPieces = false;
             this.mainText = "Time Left: ";
+            this.questions = this.questions[this.quizNumber];
             sessionStorage.setItem('questionCount', this.questionCount);
             socket.emit('gameStarted', true);
             socket.emit('start timer');
         },
+        updateQuizNumber: function(quizNumber) {
+            console.log("quiz number: ", quizNumber);
+            socket.emit('quiz to use', quizNumber);
+        },
         restart: function() {
             socket.emit("restartGame");
-
         },
         selectedAnswer: function(id) {
             if (this.timeLeft === 0 || this.userSelectedAnswer === 0 || this.userSelectedAnswer) {
@@ -108,10 +112,13 @@ new Vue({
         addSockets: function() {
             socket.on('pieces', (pieces, questions) => {
                 this.playerPieces = pieces;
+                console.log("this.numberOfQuizes: ", questions.length);
                 this.questions = questions;
+
             });
             socket.on('gameStarted', (gameStarted) => {
                 this.showPickPieces = !gameStarted;
+                this.questions = this.questions[this.quizNumber];
                 sessionStorage.setItem('questionCount', this.questionCount);
                 if (gameStarted) {
                     this.mainText = "Time Left: ";
@@ -163,9 +170,12 @@ new Vue({
 
             socket.on('number of quizes', (numberOfQuizes) => {
                 console.log("number of quizes: ", numberOfQuizes);
-                for (let i = 0; i < numberOfQuizes; i++ ) {
-                    this.numberOfQuizes.push(i);
-                }
+                this.numberOfQuizes = numberOfQuizes;
+            });
+
+            socket.on('new quiz number', quizNumber => {
+                console.log("new quiz number: ", quizNumber);
+                this.quizNumber = quizNumber;
             });
         }
     }

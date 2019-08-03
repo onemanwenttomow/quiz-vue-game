@@ -47,8 +47,25 @@ h1 {
 #next-question {
     grid-column: 2 / 3;
     grid-row: 1 / 2;
-    justify-self: start;
+    justify-self: end;
     align-self: end;
+}
+
+#quiz-selection {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    align-self: end;
+    display: flex;
+}
+
+#quiz-selection p {
+    margin: 0 5px;
+    background-color: #a6fff2;
+    padding: 5px;
+}
+
+#quiz-selection #selected-quiz {
+    background-color: #e8ffe8;
 }
 
 #player-pieces {

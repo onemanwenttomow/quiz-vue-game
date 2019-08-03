@@ -31,7 +31,7 @@
     ],
     [
         {
-            "question": "When you click the paragraph, what's the logged output?",
+            "question": "NEW QUESTION!",
             "code": "<div onclick=\"console.log('div')\">\n  <p onclick=\"console.log('p')\">\n    Click here!\n  </p>\n</div>",
             "answers": ["p div", "div p", "p", "div"],
             "answer": 0,

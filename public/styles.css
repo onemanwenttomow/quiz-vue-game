@@ -171,10 +171,10 @@ code {
 }
 
 
-.answer:hover {
+/* .answer:hover {
     background-color: #a6fff2;
     transition: 200ms;
-}
+} */
 
 .user-selected {
     background-color: #00e0ff;

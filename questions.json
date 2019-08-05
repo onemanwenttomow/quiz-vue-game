@@ -31,32 +31,32 @@
     ],
     [
         {
-            "question": "NEW QUESTION!",
-            "code": "<div onclick=\"console.log('div')\">\n  <p onclick=\"console.log('p')\">\n    Click here!\n  </p>\n</div>",
-            "answers": ["p div", "div p", "p", "div"],
-            "answer": 0,
-            "explanation": "If we click p, we see two logs: p and div. During event propagation, there are 3 phases: capturing, target, and bubbling. By default, event handlers are executed in the bubbling phase (unless you set useCapture to true). It goes from the deepest nested element outwards."
-        },
-        {
-            "question": " What's the output?",
-            "code": "const user = { name: \"Lydia\", age: 21 };\nconst admin = { admin: true, ...user };\n\nconsole.log(admin);",
-            "answers": ["{ admin: true, user: { name: \"Lydia\", age: 21 } }", "{ admin: true, name: \"Lydia\", age: 21 }", "{ admin: true, user: [\"Lydia\", 21] }", "{ admin: true }"],
-            "answer": 1,
-            "explanation": "It's possible to combine objects using the spread operator .... It lets you create copies of the key/value pairs of one object, and add them to another object. In this case, we create copies of the user object, and add them to the admin object. The admin object now contains the copied key/value pairs, which results in { admin: true, name: \"Lydia\", age: 21 }."
-        },
-        {
-            "question": " What's the output?",
-            "code": "function sum(a, b) {\n  return a + b;\n}\n\nsum(1, \"2\");",
-            "answers": ["NaN", "TypeError", "\"12\"", "3"],
+            "question": "What's the output?",
+            "code": "const list = [1 + 2, 1 * 2, 1 / 2]\nconsole.log(list)",
+            "answers": ["[\"1 + 2\", \"1 * 2\", \"1 / 2\"]", "[\"12\", 2, 0.5]", "[3, 2, 0.5]", "[1, 1, 1]"],
             "answer": 2,
-            "explanation": "JavaScript is a dynamically typed language: we don't specify what types certain variables are. Values can automatically be converted into another type without you knowing, which is called implicit type coercion. Coercion is converting from one type into another.\n\nIn this example, JavaScript converts the number 1 into a string, in order for the function to make sense and return a value. During the addition of a numeric type (1) and a string type ('2'), the number is treated as a string. We can concatenate strings like \"Hello\" + \"World\", so what's happening here is \"1\" + \"2\" which returns \"12\"."
+            "explanation": "Array elements can hold any value. Numbers, strings, objects, other arrays, null, boolean values, undefined, and other expressions such as dates, functions, and calculations.\n\nThe element will be equal to the returned value. 1 + 2 returns 3, 1 * 2 returns 2, and 1 / 2 returns 0.5."
+        },
+        {
+            "question": "Is this a pure function?",
+            "code": "function sum(a, b) {\n  return a + b;\n}",
+            "answers": ["YES", "NO"],
+            "answer": 0,
+            "explanation": "A pure function is a function that always returns the same result, if the same arguments are passed.\n\nThe sum function always returns the same result. If we pass 1 and 2, it will always return 3 without side effects. If we pass 5 and 10, it will always return 15, and so on. This is the definition of a pure function."
         },
         {
             "question": " What's the output?",
-            "code": "const set = new Set([1, 1, 2, 3, 4]);\n\n console.log(set);",
-            "answers": ["[1, 1, 2, 3, 4]", "[1, 2, 3, 4]", "{1, 1, 2, 3, 4}", "{1, 2, 3, 4}"],
-            "answer": 3,
-            "explanation": "The Set object is a collection of unique values: a value can only occur once in a set.\n \n We passed the iterable [1, 1, 2, 3, 4] with a duplicate value 1. Since we cannot have two of the same values in a set, one of them is removed. This results in {1, 2, 3, 4}."
+            "code": "const person = {\n  name: \"Lydia\",\n  age: 21\n}\n\nlet city = person.city\ncity = \"Amsterdam\"\n\nconsole.log(person)",
+            "answers": ["{ name: \"Lydia\", age: 21 }", "{ name: \"Lydia\", age: 21, city: \"Amsterdam\" }", "{ name: \"Lydia\", age: 21, city: undefined }", "Amsterdam"],
+            "answer": 0,
+            "explanation": "We set the variable city equal to the value of the property called city on the person object. There is no property on this object called city, so the variable city has the value of undefined.\n\nNote that we are not referencing the person object itself! We simply set the variable city equal to the current value of the city property on the person object.\n\nThen, we set city equal to the string \"Amsterdam\". This doesn't change the person object: there is no reference to that object.\n\nWhen logging the person object, the unmodified object gets returned."
+        },
+        {
+            "question": " What's the output?",
+            "code": "function sayHi(name) {\n  return `Hi there, ${name}`\n}\n\nconsole.log(sayHi())",
+            "answers": ["Hi there,", "Hi there, undefined", "Hi there, null", "ReferenceError"],
+            "answer": 1,
+            "explanation": "By default, arguments have the value of undefined, unless a value has been passed to the function. In this case, we didn't pass a value for the name argument. name is equal to undefined which gets logged.\n\nIn ES6, we can overwrite this default undefined value with default parameters. For example:\n\nfunction sayHi(name = \"Lydia\") { ... }\n\nIn this case, if we didn't pass a value or if we passed undefined, name would always be equal to the string Lydia"
         }
     ]
 

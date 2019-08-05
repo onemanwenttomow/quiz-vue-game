@@ -24,6 +24,9 @@ new Vue({
         if (sessionStorage.getItem('questionCount')) {
             this.questionCount = sessionStorage.getItem('questionCount');
         }
+        if (sessionStorage.getItem('quizNumber')) {
+            this.quizNumber = sessionStorage.getItem('quizNumber');
+        }
         if (sessionStorage.getItem('scores')) {
             var scores = sessionStorage.getItem('scores');
             this.scores = JSON.parse(scores);
@@ -68,6 +71,7 @@ new Vue({
             this.mainText = "Time Left: ";
             this.questions = this.questions[this.quizNumber];
             sessionStorage.setItem('questionCount', this.questionCount);
+            sessionStorage.setItem('quizNumber', this.quizNumber);
             socket.emit('gameStarted', true);
             socket.emit('start timer');
         },
@@ -130,6 +134,7 @@ new Vue({
             socket.on('restart', () => {
                 sessionStorage.setItem('piece', "");
                 sessionStorage.setItem('questionCount', "");
+                sessionStorage.setItem('quizNumber', "");
                 sessionStorage.setItem('scores', '[]');
                 this.selectedPiece = "";
                 this.correctAnswer = null;
@@ -176,6 +181,8 @@ new Vue({
             socket.on('new quiz number', quizNumber => {
                 console.log("new quiz number: ", quizNumber);
                 this.quizNumber = quizNumber;
+                sessionStorage.setItem('quizNumber', quizNumber);
+
             });
         }
     }

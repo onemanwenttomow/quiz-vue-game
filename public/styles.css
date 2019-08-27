@@ -137,7 +137,7 @@ h1 {
 
 .question {
     grid-column: 1/ -1;
-    font-size: 50px;
+    font-size: 30px;
     margin: 20px;
 }
 
@@ -148,7 +148,7 @@ code {
     margin: 0 20px;
     color: #74f9ff;
     padding: 20px;
-    font-size: 30px;
+    font-size: 25px;
     white-space: pre;
 }
 
@@ -161,7 +161,7 @@ code {
     justify-content: center;
     align-items: center;
     font-family: "Lucida Console", Monaco, monospace;
-    font-size: 25px;
+    font-size: 20px;
     padding: 20px;
 }
 
@@ -190,6 +190,7 @@ code {
     position: absolute;
     animation: fade 5s infinite;
     pointer-events: none;
+    font-size: 25px;
 }
 
 .side-bar {

@@ -8,6 +8,7 @@
 body {
     background-color: #00e0ff;
     font-family: 'Barriecito', cursive;
+    overflow-y: hidden;
 }
 
 main {

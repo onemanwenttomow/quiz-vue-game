@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-      "build": "netlify-lambda build express",
-      "start": "node index.js"
+    "build": "netlify-lambda build express",
+    "start": "node index.js"
   },
   "author": "Peter Anderson",
   "license": "ISC",

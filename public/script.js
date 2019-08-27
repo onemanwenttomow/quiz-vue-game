@@ -96,14 +96,13 @@ new Vue({
             }
 
         },
-        mouseMoving: function(e) {
+        mouseMoving: _.throttle(function(e) {
             if (this.userSelectedAnswer === 0 ||
                 this.userSelectedAnswer ||
                 this.timeLeft <= 0
             ) {
                 return;
             }
-
             this.selectPieceCoordinates.x = e.pageX - 15;
             this.selectPieceCoordinates.y = e.pageY - 15;
             socket.emit('all pieces', this.playerPieces);
@@ -112,7 +111,7 @@ new Vue({
                 x: e.pageX - 15,
                 y: e.pageY - 15
             });
-        },
+        }, 40),
         addSockets: function() {
             socket.on('pieces', (pieces, questions) => {
                 this.playerPieces = pieces;

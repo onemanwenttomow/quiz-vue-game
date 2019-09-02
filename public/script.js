@@ -103,6 +103,7 @@ new Vue({
             ) {
                 return;
             }
+            console.log(e);
             this.selectPieceCoordinates.x = e.pageX - 15;
             this.selectPieceCoordinates.y = e.pageY - 15;
             socket.emit('all pieces', this.playerPieces);

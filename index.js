@@ -84,7 +84,9 @@ io.on('connection', function(socket) {
                     y: socketPiece.y
                 } ;
             } else {
-                return piece;
+                return {
+                    ...piece
+                };
             }
         });
         io.emit('piece movements', updatedMovements);

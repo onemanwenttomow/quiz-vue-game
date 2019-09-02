@@ -18,6 +18,7 @@ new Vue({
         questionCount: 0,
         scores: [],
         quizNumber: 0,
+        offSetAdjusted: false
     },
     mounted: function() {
         this.selectedPiece = sessionStorage.getItem('piece');
@@ -97,19 +98,19 @@ new Vue({
 
         },
         mouseMoving: _.throttle(function(e) {
+
             if (this.userSelectedAnswer === 0 ||
                 this.userSelectedAnswer ||
                 this.timeLeft <= 0
             ) {
                 return;
             }
-            console.log(e);
             this.selectPieceCoordinates.x = e.pageX - 15;
             this.selectPieceCoordinates.y = e.pageY - 15;
             socket.emit('all pieces', this.playerPieces);
             socket.emit('new piece position', {
                 piece: this.selectedPiece,
-                x: e.pageX - 15,
+                x: e.pageX - 15 - this.$refs.quiz.offsetLeft,
                 y: e.pageY - 15
             });
         }, 40),
@@ -155,7 +156,26 @@ new Vue({
                 }
             });
             socket.on('piece movements', (updatedPieces) => {
-                this.playerPieces = updatedPieces;
+                console.log(this.$refs.quiz.offsetLeft);
+                // this.quizOffSetLeft = this.$refs.quiz.offSetLeft;
+                // console.log(this.quizOffSetLeft);
+                console.table(updatedPieces);
+                let newCoords;
+                if (!this.offSetAdjusted) {
+                    newCoords = updatedPieces.map(
+                        piece => {
+                            return {
+                                ...piece,
+                                x: piece.x + this.$refs.quiz.offsetLeft
+                            };
+                        }
+                    );
+                } else {
+                    newCoords = updatedPieces
+                }
+                this.offSetAdjusted = true;
+
+                this.playerPieces = newCoords;
             });
             socket.on('next question', () => {
                 this.questionCount++;

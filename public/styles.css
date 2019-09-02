@@ -8,17 +8,25 @@
 body {
     background-color: #00e0ff;
     font-family: 'Barriecito', cursive;
-    overflow-y: hidden;
 }
 
 main {
-    display: grid;
-    grid-template-columns: 800px 1fr;
+    display: flex;
+    /* grid-template-columns: 800px 1fr; */
+    flex-direction: column;
+    margin: auto 200px;
+    align-items: center;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    width: 800px;
 }
 
 h1 {
     text-transform: uppercase;
-    font-size: 6em;
+    font-size: 5em;
     text-align: center;
     color: #e8ffe8;
     grid-column: 1 / 2;
@@ -70,6 +78,9 @@ h1 {
 }
 
 #player-pieces {
+    width: 52vw;
+    margin: auto;
+    cursor: pointer;
     margin-top: 5vh;
     padding: 0;
     font-size: 5em;
@@ -124,6 +135,7 @@ h1 {
 }
 
 .quiz {
+    width: 800px;
     grid-row: 2 / 3;
     grid-column: 1 / 2;
     font-family: 'Raleway', sans-serif;
@@ -217,6 +229,7 @@ code {
 }
 
 .score-board {
+    width: 800px;
     height: 200px;
     grid-column: 1 / 2;
     grid-row: 1 / 2;

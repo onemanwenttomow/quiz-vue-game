@@ -10,23 +10,28 @@
     </head>
     <body>
         <main id="main">
-            <p class="user-piece">{{selectedPiece}} ({{numberOfPlayers}})</p>
-            <img id="spiced" src="/spiced.png" alt="spiced">
-            <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
-            <p id="next-question" v-if="questions.length && selectedPiece ==='🐌'" @click="nextQuestion">Next Question</p>
-            <div id="quiz-selection" v-if="questions.length && selectedPiece ==='🐌' && showPickPieces">
-                <p
-                    :id="index == quizNumber ? 'selected-quiz' : ''"
-                    v-for="(quiz, index) in questions"
-                    @click="updateQuizNumber(index)"
-                    > {{index+1}}
-                </p>
-            </div>
+            <header>
+                <p class="user-piece">{{selectedPiece}} ({{numberOfPlayers}})</p>
+                <p id="restart" v-if="selectedPiece ==='🐌'" @click="restart">Restart</p>
+                <p id="next-question" v-if="questions.length && selectedPiece ==='🐌'" @click="nextQuestion">Next Question</p>
+                <div id="quiz-selection" v-if="questions.length && selectedPiece ==='🐌' && showPickPieces">
+                    <p
+                        :id="index == quizNumber ? 'selected-quiz' : ''"
+                        v-for="(quiz, index) in questions"
+                        @click="updateQuizNumber(index)"
+                        > {{index+1}}
+                    </p>
+                </div>
+                <img id="spiced" src="/spiced.png" alt="spiced">
+            </header>
+
             <div id="quiz-selection" v-else="questions.length && selectedPiece ==='🐌' && !showPickPieces">
                 <p v-if="selectedPiece ==='🐌'"> {{quizNumber +1}} </p>
             </div>
+
             <h1 v-if="showPickPieces || timeLeft <= 0">{{mainText}}</h1>
             <h1 v-else="!showPickPieces">{{mainText}}<span id="timeleft">{{timeLeft}}</span>secs</h1>
+
             <transition name="fade">
                 <ul id="player-pieces" v-if="showPickPieces">
                     <li
@@ -44,11 +49,9 @@
                 v-if="selectedPiece ==='🐌' && showPickPieces"
                 id="start"
                 @click="startGame"
-            >
-                START
-            </button>
+            >START</button>
 
-            <div class="quiz" v-if="!showPickPieces" @mousemove="mouseMoving">
+            <div class="quiz" v-if="!showPickPieces" @mousemove="mouseMoving" ref="quiz">
                 <div v-if="questions.length" class="question" @click="checkAnswer">{{questions[questionCount].question}}</div>
                 <code>{{questions[questionCount].code}}</code>
                 <div

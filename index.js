@@ -25,7 +25,6 @@ io.on('connection', function(socket) {
     socket.on('disconnect', function() {
         console.log(`socket with the id ${socket.id} is now disconnected`);
     });
-    console.log("number of quizes: ", questions.length);
 
     io.emit('number of quizes', questions.length);
 
@@ -47,7 +46,6 @@ io.on('connection', function(socket) {
 
     socket.on('gameStarted', function() {
         socket.broadcast.emit('gameStarted', true);
-        console.log("GAME STARTED!!!!");
         gameStarted = true;
     });
 
@@ -70,7 +68,6 @@ io.on('connection', function(socket) {
     });
 
     socket.on('player selected answer', selectedPiece => {
-        console.log("player selected answer!!!!", selectedPiece);
         numberOfAnswersThisRound ++;
     });
 
@@ -78,7 +75,6 @@ io.on('connection', function(socket) {
     socket.on('correct answer', function(correct, piece) {
         correct && totalScore++;
         correct && correctAnswerPieces.push(piece);
-        console.log("emitting total score: ", totalScore, correctAnswerPieces);
         io.emit('total score', totalScore, correctAnswerPieces);
     });
 
@@ -122,7 +118,6 @@ io.on('connection', function(socket) {
         }
 
         time--;
-        console.log(time);
         io.emit('timeLeft', time);
         if (time <= 0 ) {
             numberOfAnswersThisRound = 0;

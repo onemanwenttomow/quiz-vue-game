@@ -165,16 +165,12 @@ new Vue({
                 sessionStorage.setItem('questionCount', this.questionCount);
             });
             socket.on('total score', (totalScore, correctAnswerPieces) => {
-                console.log("made it to total score...");
                 this.scores[this.questionCount] = {
                     questionCount: this.questionCount + 1,
                     totalScore,
                     percentage: Math.round(totalScore / this.numberOfPlayers * 100) + "%",
                     correctAnswerPieces: correctAnswerPieces
                 };
-                console.log("this.scores: ", this.scores);
-                console.log(this.scores.length);
-                console.log(this.scores[0]);
                 this.$forceUpdate();
                 sessionStorage.setItem('scores', JSON.stringify(this.scores));
             });

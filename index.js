@@ -17,6 +17,7 @@ app.use(express.static('public'));
 
 let gameStarted = false;
 let totalScore = 0;
+let numberOfAnswersThisRound = 0;
 let correctAnswerPieces = [];
 
 io.on('connection', function(socket) {
@@ -46,6 +47,7 @@ io.on('connection', function(socket) {
 
     socket.on('gameStarted', function() {
         socket.broadcast.emit('gameStarted', true);
+        console.log("GAME STARTED!!!!");
         gameStarted = true;
     });
 
@@ -67,10 +69,16 @@ io.on('connection', function(socket) {
         playerPieces = allPieces;
     });
 
+    socket.on('player selected answer', selectedPiece => {
+        console.log("player selected answer!!!!", selectedPiece);
+        numberOfAnswersThisRound ++;
+    });
+
 
     socket.on('correct answer', function(correct, piece) {
         correct && totalScore++;
         correct && correctAnswerPieces.push(piece);
+        console.log("emitting total score: ", totalScore, correctAnswerPieces);
         io.emit('total score', totalScore, correctAnswerPieces);
     });
 
@@ -109,9 +117,15 @@ io.on('connection', function(socket) {
     });
 
     function countDownTimer() {
+        if (numberOfAnswersThisRound ==  playerPieces.filter(piece => piece.selected).length) {
+            time = 1;
+        }
+
         time--;
+        console.log(time);
         io.emit('timeLeft', time);
-        if (time <= -1 ) {
+        if (time <= 0 ) {
+            numberOfAnswersThisRound = 0;
             return;
         }
         setTimeoutTracker = setTimeout(countDownTimer, 1000);

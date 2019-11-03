@@ -76,7 +76,6 @@ new Vue({
             socket.emit('start timer');
         },
         updateQuizNumber: function(quizNumber) {
-            console.log("quiz number: ", quizNumber);
             socket.emit('quiz to use', quizNumber);
         },
         restart: function() {
@@ -86,6 +85,7 @@ new Vue({
             if (this.timeLeft === 0 || this.userSelectedAnswer === 0 || this.userSelectedAnswer) {
                 return;
             }
+            socket.emit('player selected answer', (this.selectedPiece));
             this.userSelectedAnswer = id;
         },
         checkAnswer: function() {
@@ -103,7 +103,6 @@ new Vue({
             ) {
                 return;
             }
-            console.log(e);
             this.selectPieceCoordinates.x = e.pageX - 15;
             this.selectPieceCoordinates.y = e.pageY - 15;
             socket.emit('all pieces', this.playerPieces);
@@ -116,11 +115,12 @@ new Vue({
         addSockets: function() {
             socket.on('pieces', (pieces, questions) => {
                 this.playerPieces = pieces;
-                console.log("this.numberOfQuizes: ", questions.length);
                 this.questions = questions;
 
             });
             socket.on('gameStarted', (gameStarted) => {
+                sessionStorage.setItem('scores', '[]');
+                this.scores = [];
                 this.showPickPieces = !gameStarted;
                 this.questions = this.questions[this.quizNumber];
                 sessionStorage.setItem('questionCount', this.questionCount);
@@ -165,21 +165,25 @@ new Vue({
                 sessionStorage.setItem('questionCount', this.questionCount);
             });
             socket.on('total score', (totalScore, correctAnswerPieces) => {
+                console.log("made it to total score...");
                 this.scores[this.questionCount] = {
-                    totalScore: totalScore,
+                    questionCount: this.questionCount + 1,
+                    totalScore,
                     percentage: Math.round(totalScore / this.numberOfPlayers * 100) + "%",
                     correctAnswerPieces: correctAnswerPieces
                 };
+                console.log("this.scores: ", this.scores);
+                console.log(this.scores.length);
+                console.log(this.scores[0]);
+                this.$forceUpdate();
                 sessionStorage.setItem('scores', JSON.stringify(this.scores));
             });
 
             socket.on('number of quizes', (numberOfQuizes) => {
-                console.log("number of quizes: ", numberOfQuizes);
                 this.numberOfQuizes = numberOfQuizes;
             });
 
             socket.on('new quiz number', quizNumber => {
-                console.log("new quiz number: ", quizNumber);
                 this.quizNumber = quizNumber;
                 sessionStorage.setItem('quizNumber', quizNumber);
 

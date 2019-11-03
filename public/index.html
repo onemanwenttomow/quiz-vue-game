@@ -25,7 +25,7 @@
             <div id="quiz-selection" v-else="questions.length && selectedPiece ==='🐌' && !showPickPieces">
                 <p v-if="selectedPiece ==='🐌'"> {{quizNumber +1}} </p>
             </div>
-            <h1 v-if="showPickPieces || timeLeft <= 0">{{mainText}}</h1>
+            <h1 v-if="showPickPieces || timeLeft <= 0" >{{mainText}}</h1>
             <h1 v-else="!showPickPieces">{{mainText}}<span id="timeleft">{{timeLeft}}</span>secs</h1>
             <transition name="fade">
                 <ul id="player-pieces" v-if="showPickPieces">
@@ -74,7 +74,7 @@
 
             <div class="side-bar">
 
-                <div class="score-board" v-if="scores.length > 0">
+                <div class="score-board" v-if="scores">
                     <div class="question-title table flex-center table-header">Question</div>
                     <div class="table flex-center table-header">% Correct</div>
                     <div class="table flex-center table-header">Who got it right?</div>
@@ -84,7 +84,7 @@
                     <div class="percentages table" v-for="score in scores">
                         {{score.percentage}}
                     </div>
-                    <div class="winners table" v-for="score in scores">
+                    <div class="winners table" v-for="score in scores" >
                         <span v-for="piece in score.correctAnswerPieces">{{piece}}</span>
                     </div>
                 </div>

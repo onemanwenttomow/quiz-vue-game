@@ -96,7 +96,7 @@ new Vue({
             }
 
         },
-        mouseMoving: _.throttle(function(e) {
+        mouseMoving: function(e) {
             if (this.userSelectedAnswer === 0 ||
                 this.userSelectedAnswer ||
                 this.timeLeft <= 0
@@ -111,7 +111,7 @@ new Vue({
                 x: e.pageX - 15,
                 y: e.pageY - 15
             });
-        }, 40),
+        },
         addSockets: function() {
             socket.on('pieces', (pieces, questions) => {
                 this.playerPieces = pieces;
@@ -171,6 +171,7 @@ new Vue({
                     percentage: Math.round(totalScore / this.numberOfPlayers * 100) + "%",
                     correctAnswerPieces: correctAnswerPieces
                 };
+
                 this.$forceUpdate();
                 sessionStorage.setItem('scores', JSON.stringify(this.scores));
             });

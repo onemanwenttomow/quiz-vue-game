@@ -18,7 +18,7 @@ main {
 
 h1 {
     text-transform: uppercase;
-    font-size: 6em;
+    font-size: 5em;
     text-align: center;
     color: #e8ffe8;
     grid-column: 1 / 2;

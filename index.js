@@ -1,7 +1,9 @@
 const express       = require('express');
 const app           = express();
 const http          = require('http').createServer(app);
-const io            = require('socket.io')(http);
+const io            = require('socket.io')(http, {
+    origins: "localhost:8080 admiring-lichterman-7e493d.netlify.com"
+});
 const questions     = require('./questions');
 let playerPieces    = require('./pieces').map(piece => {
     return piece = {
@@ -68,6 +70,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('player selected answer', selectedPiece => {
+        console.log("player selected answer!!!!", selectedPiece);
         numberOfAnswersThisRound ++;
     });
 
@@ -75,6 +78,7 @@ io.on('connection', function(socket) {
     socket.on('correct answer', function(correct, piece) {
         correct && totalScore++;
         correct && correctAnswerPieces.push(piece);
+        console.log("emitting total score: ", totalScore, correctAnswerPieces);
         io.emit('total score', totalScore, correctAnswerPieces);
     });
 
@@ -118,6 +122,7 @@ io.on('connection', function(socket) {
         }
 
         time--;
+        console.log(time);
         io.emit('timeLeft', time);
         if (time <= 0 ) {
             numberOfAnswersThisRound = 0;

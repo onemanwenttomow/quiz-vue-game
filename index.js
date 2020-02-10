@@ -2,7 +2,7 @@ const express       = require('express');
 const app           = express();
 const http          = require('http').createServer(app);
 const io            = require('socket.io')(http, {
-    origins: "localhost:8080 admiring-lichterman-7e493d.netlify.com"
+    origins: "localhost:8080 sockets-quiz.herokuapp.com:*"
 });
 const questions     = require('./questions');
 let playerPieces    = require('./pieces').map(piece => {
